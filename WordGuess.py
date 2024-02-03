@@ -40,6 +40,7 @@ def word_preprocess(text):
     tok_tags = nltk.pos_tag(set_lemm_toks)
     print(tok_tags[:20])
 
+    #Filter noun tokens
     noun_toks = [pt[0] for pt in tok_tags if pt[1]=='NN']
 
     print(f"\nNumber of tokens:{len(filter_toks)}\nNumber of Nouns:{len(noun_toks)}\n")
@@ -66,7 +67,7 @@ def word_guess_game(noun_list,score = 5):
     current_word = ""
     current_guesses = ['_']
                                     
-
+    #Guessing loop
     while score > -1:
 
         #Word complete. FLag to replace with new word.
@@ -126,14 +127,6 @@ def word_guess_game(noun_list,score = 5):
     return score
 
 
-def find(s, ch):
-    '''
-    Find indices of character in string.
-    Author: Lev Levitsky
-    Source: https://stackoverflow.com/a/11122355
-    '''
-    return [i for i, ltr in enumerate(s) if ltr == ch]
-
 if __name__ == "__main__":
 
     #Get filename as arg
@@ -163,18 +156,6 @@ if __name__ == "__main__":
     tok_dist = nltk.FreqDist(toks)
     noun_count_dict = {w:tok_dist[w] for w in nouns}
 
-    # Older version of code which does not work as well
-    # #Get unique tokens and their counts
-    # uniq_toks = Counter(toks).keys()
-    # uniq_counts = Counter(toks).values() 
-
-    # #Put into dictionary if token is a noun
-    # noun_count_dict2 = {noun_tok:noun_count for noun_tok, noun_count in zip(uniq_toks, uniq_counts) if noun_tok in nouns}
-
-    # diff = deepdiff.DeepDiff(noun_count_dict1, noun_count_dict2)
-    # print(json.dumps(json.loads(diff.to_json()), indent=4))  
-
-
     sorted_noun_dict = sorted(noun_count_dict.items(), key=operator.itemgetter(1), reverse=True)
 
     print(f"Top 50 nouns in document:\n{sorted_noun_dict[:50]}")
@@ -186,6 +167,7 @@ if __name__ == "__main__":
     start_game = 'y'
     best_score = -1
 
+    #Initialize pygame sounds if pygame installed
     if(pygame_inst):
         pygame.init()
         pygame.mixer.init()
@@ -209,10 +191,3 @@ if __name__ == "__main__":
             else:
                 print(f"Your best score is {best_score}!")
             best_score = max(best_score, score)
-            
-
-    
-    #score = word_guess_game(noun_list)
-        
-
-
