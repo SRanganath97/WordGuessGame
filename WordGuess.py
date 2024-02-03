@@ -57,7 +57,7 @@ def word_guess_game(noun_list,score = 5):
     #Input checking 
     if(not noun_list):
         return -2
-    if(not score.is_integer() or score < 0):
+    if(not isinstance(score,int) or score < 0):
         return -3
 
     #Set up game
